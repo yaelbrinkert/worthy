@@ -1,0 +1,35 @@
+services:
+  frontend:
+    image: php:8.1-apache # PHP 8.1 with Apache pre-installed
+    container_name: frontend_php
+    ports:
+      - '8080:80' # Expose frontend on port 8080
+    volumes:
+      - ./frontend:/var/www/html # Mount frontend files (HTML, PHP) to Apache's web root
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - '9876:9876'
+    volumes:
+      - ./backend:/usr/src/app
+      # - /usr/src/app/node_modules
+    networks:
+      - app-network
+    depends_on:
+      - redis
+
+  redis:
+    image: 'redis:latest'
+    ports:
+      - '6379:6379'
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
