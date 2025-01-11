@@ -260,6 +260,7 @@ wty {
   border-bottom: 4px solid #c3a47c;
   background-color: var(--main-color);
   color: var(--accent-color);
+  font-family: var(--main-font);
   outline: none;
   border-radius: 2rem;
   height: 40px;
@@ -359,6 +360,7 @@ wty {
 .wrapper__filters__filter label {
   padding: 6px 8px;
   position: relative;
+  border-bottom: 2px solid transparent;
 }
 
 .wrapper__filters__filter label:hover {
@@ -383,8 +385,8 @@ wty {
   border-radius: 1rem;
   background-color: var(--main-color) !important;
   color: var(--accent-color);
-  border-bottom: 2px solid var(--accent-color);
-  font-weight: 600;
+  border-bottom: 2px solid var(--accent-color) !important;
+  /* font-weight: 600; */
 }
 
 .cards {

@@ -183,7 +183,8 @@ hr {
   background-color: var(--main-color);
   border-radius: 1rem;
   margin: 5px 0;
-  /* border: 2px solid var(--main-color); */
+  border: 2px solid var(--main-color);
+  transition: all 0.15s ease-in-out;
 }
 
 .input_attributes:checked + .label_attributes {
