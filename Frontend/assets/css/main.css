@@ -468,7 +468,6 @@ wty {
 
 .card_image {
   position: relative;
-  aspect-ratio: 1 / 1;
 }
 
 .card_image img {
@@ -481,7 +480,7 @@ wty {
   transition: var(--main-transition-025all);
 }
 
-.card_sex {
+/* .card_sex {
   font-weight: 400;
   background-color: var(--main-color);
   padding: 5px 8px;
@@ -491,7 +490,7 @@ wty {
   width: fit-content;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .card_buttons {
   display: flex;
