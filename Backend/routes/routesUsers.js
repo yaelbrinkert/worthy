@@ -12,6 +12,6 @@ router.post('/cart/:itemId/:quantity', Auth, usersController.addToCart);
 router.delete('/cart/:itemId', Auth, usersController.removeFromCart);
 router.patch('/cart/add/:itemId', Auth, usersController.addOneToCart);
 router.patch('/cart/remove/:itemId', Auth, usersController.removeOneFromCart);
-router.post('/checkout-single', usersController.checkoutSingleProduct);
+router.post('/checkoutsingle', usersController.checkoutSingleProduct);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const Bcrypt = require('bcryptjs');
 const Cart = require('../models/basket');
 const User = require('../models/users');
+const Variants = require('../models/variants');
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -248,6 +249,10 @@ exports.removeOneFromCart = async (req, res) => {
 };
 
 exports.checkoutSingleProduct = async (req, res) => {
+  try {
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
   const amount = 1000;
   const currency = 'EUR';
   try {

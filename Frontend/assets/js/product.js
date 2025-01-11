@@ -82,11 +82,14 @@ async function getSpecificProduct(idProduct) {
   }
 }
 
-async function checkoutSingleProduct(idProduct) {
+// FAIRE UN TABLEAU A IMPORTER (QUI COMPORTE LES ID DES PRODUITS, ON VA LES RETROUVER DANS LA BDD PUIS CHERCHER LEUR VARIANT ET PAR CONSEQUENT LEUR PRIX)
+async function checkoutSingleProduct(idOfProduct) {
   try {
-    const response = await fetch(`${urlBackend}/users/checkout-single`);
-    const datas = await response.json();
-    return datas;
+    const response = await fetch(`${urlBackend}/users/checkoutsingle`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: idOfProduct }),
+    });
   } catch (err) {
     console.error('Erreur', err);
   }
@@ -97,7 +100,7 @@ function actualizePriceAndReductedPrice(price, reductprice) {
   reductedPriceWrapper.innerHTML = `${reductprice}€`;
 }
 
-function createInputsForVariants(key, value, price, reductedprice) {
+function createInputsForVariants(idVariant, key, value, price, reductedprice) {
   const filterItem = document.querySelector('#filterItem');
   const labelInput = document.createElement('label');
   labelInput.setAttribute('for', `${key}_${value}`);
@@ -107,6 +110,7 @@ function createInputsForVariants(key, value, price, reductedprice) {
   const inputAttribute = document.createElement('input');
   inputAttribute.type = 'radio';
   inputAttribute.name = key;
+  inputAttribute.setAttribute('data-id-variant', idVariant);
   inputAttribute.setAttribute('data-price', price);
   inputAttribute.setAttribute('data-reductedprice', reductedprice);
   inputAttribute.className = 'input_attributes';
@@ -152,7 +156,12 @@ function createBasketAndBuyButtons() {
   wrapperButtons.appendChild(basketButton);
   wrapperButtons.appendChild(buyButton);
   buyButton.addEventListener('click', function () {
-    checkoutSingleProduct(1);
+    // Input of selected value
+    const allInputsSelected = document.querySelectorAll(
+      'input[type="radio"]:checked'
+    );
+    const idOfProduct = allInputsSelected.getAttribute('data-id-variant');
+    checkoutSingleProduct(idOfProduct);
   });
 }
 
@@ -176,6 +185,7 @@ async function showItem(idProduct) {
       const attributes = variant.attributes;
       if (attributes instanceof Map) {
         createInputsForVariants(
+          variant._id,
           key,
           value,
           variant.price,
@@ -185,6 +195,7 @@ async function showItem(idProduct) {
         // Si ce n'est pas un vrai Map (mais un objet), on utilise Object.entries
         Object.entries(attributes).forEach(([key, value]) => {
           createInputsForVariants(
+            variant._id,
             key,
             value,
             variant.price,
