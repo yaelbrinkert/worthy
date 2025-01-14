@@ -9,8 +9,9 @@
   <body class="body-index">
     <?php require_once('./components/navbar.php');?>
     <main>
-      <div id="root"></div>
+      
     </main>
+    <?php require_once('./components/footer.php')?>
     <?php require_once('./components/scripts.php');?>
   </body>
 </html>

@@ -10,6 +10,7 @@
   <body class="body-product">
   <?php require_once('./components/banner.php');?>
   <?php require_once('./components/navbar.php');?>
+  <?php require_once('./components/buyingcontainer.php')?>
     <main class="wrapper__shop">
       <!--  -->
       <div class="skeleton__wrapper">
@@ -53,6 +54,7 @@
         </div>
       </div>
     </main>
+    <?php require_once('./components/footer.php')?>
     <?php require_once('./components/scripts.php');?>
     <script src="./assets/js/product.js"></script>
   </body>

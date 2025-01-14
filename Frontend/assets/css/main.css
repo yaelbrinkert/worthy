@@ -699,3 +699,117 @@ wty {
     background-position: 50% 50%;
   }
 }
+
+/** ACCUEIL **/
+
+/** FOOTER **/
+
+.wrapper__footer {
+  background-color: var(--accent-color);
+  border-top: 6px solid #25190b;
+  padding: 30px;
+  border-radius: 2rem 2rem 0 0;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.wrapper__footer__logo {
+  display: flex;
+  max-width: 200px;
+  width: 100%;
+}
+
+.wrapper__links__copyright {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.links__footer {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  font-size: 10px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.links__footer hr {
+  width: 1px;
+  height: 10px;
+  display: flex;
+  background-color: var(--main-color);
+  border: 0;
+}
+
+.links__footer li a {
+  color: var(--main-color);
+}
+
+.copyright__footer {
+  color: var(--main-color);
+  font-size: 10px;
+  text-align: center;
+}
+
+/** ORDER CONTAINER **/
+
+.wrapper__order {
+  position: absolute;
+  display: flex;
+  max-width: 500px;
+  border-radius: 2.5rem 0 0 2.5rem;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  right: 0;
+  top: 0;
+  background-color: var(--main-color);
+  border-left: 12px solid var(--accent-color);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+#payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 30px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardholder-name,
+.submit-button {
+  border: 0;
+  border-radius: 1rem;
+  border-bottom: 4px solid #25190b;
+  background-color: var(--accent-color);
+  color: var(--main-color);
+  padding: 10px;
+  font-family: var(--main-font);
+  outline: none;
+  transition: all 0.25s ease-in-out;
+}
+
+.cardholder-name::placeholder {
+  color: var(--main-color);
+  opacity: 0.6;
+}
+
+.submit-button {
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  transform: translateY(-3px);
+}

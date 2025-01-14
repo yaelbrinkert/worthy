@@ -100,6 +100,7 @@
         <span class="btn-next"><i class="fa fa-chevron-right"></i></span>
       </div>
     </main>
+    <?php require_once('./components/footer.php')?>
     <?php require_once('./components/scripts.php');?>
     <script src="./assets/js/shop.js"></script>
   </body>

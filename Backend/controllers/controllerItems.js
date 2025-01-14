@@ -112,7 +112,9 @@ exports.getSpecificItem = async (req, res) => {
 exports.getSpecificVariants = async (req, res) => {
   const idQuery = req.params.id;
   try {
-    const variant = await Variants.find({ product_id: idQuery });
+    const variant = await Variants.find({ product_id: idQuery }).sort({
+      price: 1,
+    });
     res.status(200).json(variant);
   } catch (err) {
     res.status(500).json({ error: err });
