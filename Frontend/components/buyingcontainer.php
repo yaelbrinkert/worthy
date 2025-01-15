@@ -1,6 +1,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <aside class="wrapper__order">
+    <span class="close__order"><i class="fa fa-xmark"></i> Fermer</span>
     <form id="payment-form">
         <div class="form-group">
             <label for="cardholder-name">Nom du titulaire</label>
@@ -22,6 +23,14 @@
     </form>
 </aside>
 
+
+<script>
+    const closeOrderWrapper = document.querySelector('.wrapper__order');
+    const closeOrder = document.querySelector('.close__order');
+    closeOrder.addEventListener('click', () => {
+        closeOrderWrapper.classList.remove('open__order');
+    })
+</script>
 <script>
     const stripe = Stripe('pk_test_51JPWqLIuG2X5dLxKQhNHn9yQV6gzs87oyT8k2qHwuMhOrZCFpT3F9vXzzWcdJJ02N58eq23DwECJFC0M2s9CT5C100eoFFA0Z9')
     const elements = stripe.elements();

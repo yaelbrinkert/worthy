@@ -59,11 +59,12 @@ hr {
 
 .actual__price {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
+  color: var(--accent-color);
 }
 
 .reducted__price {
-  font-size: 16px;
+  font-size: 14px;
   color: #a2a2a2;
   text-decoration: line-through;
   margin-right: 12px;
@@ -183,12 +184,16 @@ hr {
   background-color: var(--main-color);
   border-radius: 1rem;
   margin: 5px 0;
-  border: 2px solid var(--main-color);
+  border: 0;
+  border-bottom: 4px solid #503618;
   transition: all 0.15s ease-in-out;
 }
 
 .input_attributes:checked + .label_attributes {
-  border: 2px solid var(--accent-color);
+  color: var(--main-color);
+  background-color: var(--accent-color);
+  border: 0;
+  border-bottom: 4px solid #281b0c;
 }
 
 .wrapper__basket_and_buy__buttons {

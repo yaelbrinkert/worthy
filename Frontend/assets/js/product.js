@@ -156,6 +156,8 @@ function createBasketAndBuyButtons() {
   wrapperButtons.appendChild(basketButton);
   wrapperButtons.appendChild(buyButton);
   buyButton.addEventListener('click', function () {
+    const containerOrder = document.querySelector('.wrapper__order');
+    containerOrder.classList.add('open__order');
     // Input of selected value
     const allInputsSelected = document.querySelectorAll(
       'input[type="radio"]:checked'
