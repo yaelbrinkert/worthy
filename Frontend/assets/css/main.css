@@ -8,6 +8,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Montserrat', sans-serif;
+  src: url('../fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -760,7 +767,7 @@ wty {
 
 .wrapper__order {
   position: absolute;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 20px;
   max-width: 500px;
@@ -776,10 +783,11 @@ wty {
   border-left: 12px solid var(--accent-color);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-  transition: all 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out;
 }
 
 .open__order {
+  display: flex;
   transform: translateX(0px);
 }
 

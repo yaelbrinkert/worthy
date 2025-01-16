@@ -248,21 +248,33 @@ exports.removeOneFromCart = async (req, res) => {
   }
 };
 
+const calculateOrderAmount = (items) => {
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  let total = 0;
+  items.forEach((item) => {
+    total += item.amount;
+  });
+  return total;
+};
+
 exports.checkoutSingleProduct = async (req, res) => {
   try {
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-  const amount = 1000;
-  const currency = 'EUR';
-  try {
+    const { items } = req.body;
+
+    // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      payment_method_types: payment_method_types || ['card'],
-      description: 'Achat produit X',
+      amount: calculateOrderAmount(items),
+      currency: 'eur',
+      // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+      automatic_payment_methods: {
+        enabled: true,
+      },
     });
-    res.status(200).json({ clientSecret: paymentIntent.client_secret });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
