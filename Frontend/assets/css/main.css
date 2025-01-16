@@ -15,6 +15,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Poppins', sans-serif;
+  src: url('../fonts/Poppins/Poppins-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -38,6 +45,7 @@ body,
 html {
   font-family: var(--main-font);
   width: 100%;
+  min-height: 100vh;
 }
 
 wty {
@@ -721,6 +729,10 @@ wty {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .wrapper__footer__logo {
@@ -773,14 +785,14 @@ wty {
   max-width: 500px;
   border-radius: 2.5rem 0 0 2.5rem;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   z-index: 10;
   transform: translateX(500px);
   right: 0;
   top: 0;
   padding: 30px;
   background-color: var(--main-color);
-  border-left: 12px solid var(--accent-color);
+  /* border-left: 12px solid var(--accent-color); */
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   transition: transform 0.25s ease-in-out;
@@ -809,6 +821,15 @@ wty {
   width: 100%;
 }
 
+.form-order {
+  box-shadow: unset !important;
+}
+
+.AccordionItem {
+  background-color: var(--accent-color) !important;
+  all: unset !important;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -816,7 +837,8 @@ wty {
 }
 
 .cardholder-name,
-.submit-button {
+.submit-button,
+#submit {
   border: 0;
   border-radius: 1rem;
   border-bottom: 4px solid #25190b;
@@ -826,6 +848,7 @@ wty {
   font-family: var(--main-font);
   outline: none;
   transition: all 0.25s ease-in-out;
+  text-transform: uppercase;
 }
 
 .cardholder-name::placeholder {
@@ -833,10 +856,12 @@ wty {
   opacity: 0.6;
 }
 
-.submit-button {
+.submit-button,
+#submit {
   cursor: pointer;
 }
 
-.submit-button:hover {
+.submit-button:hover,
+#submit:hover {
   transform: translateY(-3px);
 }
