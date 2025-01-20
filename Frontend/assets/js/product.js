@@ -82,18 +82,19 @@ async function getSpecificProduct(idProduct) {
   }
 }
 
-// FAIRE UN TABLEAU A IMPORTER (QUI COMPORTE LES ID DES PRODUITS, ON VA LES RETROUVER DANS LA BDD PUIS CHERCHER LEUR VARIANT ET PAR CONSEQUENT LEUR PRIX)
-async function checkoutSingleProduct(idOfProduct) {
+async function getOneVariant(idVariant) {
   try {
-    const response = await fetch(`${urlBackend}/users/checkoutsingle`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: idOfProduct }),
-    });
+    const response = await fetch(
+      `${urlBackend}/items/getonevariant/${idVariant}`
+    );
+    const datas = await response.json();
+    return datas;
   } catch (err) {
     console.error('Erreur', err);
   }
 }
+
+// FAIRE UN TABLEAU A IMPORTER (QUI COMPORTE LES ID DES PRODUITS, ON VA LES RETROUVER DANS LA BDD PUIS CHERCHER LEUR VARIANT ET PAR CONSEQUENT LEUR PRIX)
 
 function actualizePriceAndReductedPrice(price, reductprice) {
   realPriceWrapper.innerHTML = `${price}€`;
@@ -156,15 +157,22 @@ function createBasketAndBuyButtons() {
   wrapperButtons.appendChild(basketButton);
   wrapperButtons.appendChild(buyButton);
   buyButton.addEventListener('click', function () {
-    const containerOrder = document.querySelector('.wrapper__order');
+    // Open modal
+    const containerOrder = document.querySelector('.container__wrapper__order');
     containerOrder.classList.add('open__order');
+
+    // Disable scrolling
+    const body = document.querySelectorAll('body')[0];
+    body.style.overflow = 'hidden';
+
     // Input of selected value
     const allInputsSelected = document.querySelectorAll(
       'input[type="radio"]:checked'
-    );
-    // const idOfProduct = allInputsSelected.getAttribute('data-id-variant');
+    )[0];
+    // // A CHANGEr DES QUE POSSIBLE POUR RECUPERER CORRECTEMENT LES VARIANTES...
+    const idOfProduct = allInputsSelected.getAttribute('data-id-variant');
     // checkoutSingleProduct(idOfProduct);
-    initialize();
+    initialize(idOfProduct);
   });
 }
 
@@ -217,19 +225,40 @@ async function showItem(idProduct) {
 
 showItem(idQuery);
 
-const closeOrderWrapper = document.querySelector('.wrapper__order');
-const closeOrder = document.querySelector('.close__order');
-closeOrder.addEventListener('click', () => {
-  closeOrderWrapper.classList.remove('open__order');
-});
-
 const stripe = Stripe(
   'pk_test_51JPWqLIuG2X5dLxKQhNHn9yQV6gzs87oyT8k2qHwuMhOrZCFpT3F9vXzzWcdJJ02N58eq23DwECJFC0M2s9CT5C100eoFFA0Z9'
 );
 
 let elements;
 
-const items = [{ id: 'xl-tshirt', amount: 1000 }];
+const closeOrderWrapper = document.querySelector('.container__wrapper__order');
+const closeOrder = document.querySelector('.close__order');
+closeOrder.addEventListener('click', () => {
+  closeOrderWrapper.classList.remove('open__order');
+  // Able to scroll
+  const body = document.querySelectorAll('body')[0];
+  body.style.overflow = 'auto';
+});
+
+async function changePriceOrderAside() {
+  const allInputsSelected = document.querySelectorAll(
+    'input[type="radio"]:checked'
+  )[0];
+  // A CHANGEr DES QUE POSSIBLE POUR RECUPERER CORRECTEMENT LES VARIANTES...
+  const idOfVariantProduct = allInputsSelected.getAttribute('data-id-variant');
+  const variantProduct = await getOneVariant(idOfVariantProduct);
+  const productId = await getSpecificProduct(variantProduct.product_id);
+  const priceProduct = variantProduct.price;
+
+  const nameProduct = productId.name;
+  const subcategoryProduct = productId.subcategory;
+
+  const nameContainer = document.getElementById('title-element');
+  nameContainer.innerHTML = `${subcategoryProduct} <wty>${nameProduct}</wty>`;
+
+  const priceContainer = document.getElementById('price-element');
+  priceContainer.textContent = `${priceProduct}€`;
+}
 
 // initialize();
 
@@ -237,25 +266,45 @@ document
   .querySelector('#payment-form')
   .addEventListener('submit', handleSubmit);
 
-async function initialize() {
-  const response = await fetch(`${urlBackend}/users/checkoutsingle`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items }),
-  });
-  const { clientSecret } = await response.json();
+async function initialize(idOfProductVariant) {
+  changePriceOrderAside();
 
-  const appearance = {
-    theme: 'stripe',
-  };
-  elements = stripe.elements({ appearance, clientSecret });
+  try {
+    const response = await fetch(`${urlBackend}/users/checkoutsingle`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ idOfProductVariant }),
+    });
 
-  const paymentElementOptions = {
-    layout: 'accordion',
-  };
+    if (!response.ok) {
+      throw new Error('Erreur dans la communication avec le serveur');
+    }
 
-  const paymentElement = elements.create('payment', paymentElementOptions);
-  paymentElement.mount('#payment-element');
+    const { clientSecret } = await response.json();
+
+    // Vérifiez si clientSecret est présent
+    if (!clientSecret) {
+      throw new Error('Le clientSecret est manquant dans la réponse backend');
+    }
+
+    // Initialisez Stripe Elements avec le clientSecret
+    const appearance = {
+      theme: 'flat',
+      variables: {
+        colorPrimary: '#25190b',
+        colorBackground: '#503618',
+        colorText: '#EAC696',
+      },
+    };
+    elements = stripe.elements({ appearance, clientSecret });
+
+    const paymentElement = elements.create('payment', { layout: 'tabs' });
+    paymentElement.mount('#payment-element');
+  } catch (error) {
+    console.error("Erreur lors de l'initialisation :", error);
+    alert("Une erreur est survenue lors de l'initialisation du paiement.");
+  }
 }
 
 async function handleSubmit(e) {

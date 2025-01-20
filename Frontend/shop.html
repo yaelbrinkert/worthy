@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accueil</title>
-    <?php require_once('./components/metas.php');?>
+    <script type="module">
+      import { attachMetas } from './components/metas.js';
+      attachMetas(document.head);
+    </script>
   </head>
   <body class="body-index">
-  <?php require_once('./components/banner.php');?>
-  <?php require_once('./components/navbar.php');?>
+  <script type="module">
+    import { attachNavbar } from './components/navbar.js';
+    attachNavbar(document.body);
+  </script>
+  <script type="module">
+    import { attachBanner } from './components/banner.js';
+    attachBanner(document.body)
+  </script>
     <main class="wrapper__shop">
       <h1 class="title__shop">Tous nos produits <wty>Worthy</<wty></h1><br>
       <div class="wrapper__filters__items">
@@ -19,17 +28,7 @@
             Promotions
           </label>
           <br>
-          <!-- <p><b>Genre</b></p>
-          <label>
-            <input class="filter-sex" type="checkbox" value="m">
-            Homme
-          </label>
-          <label>
-            <input class="filter-sex" type="checkbox" value="w">
-            Femme
-          </label>
-          <br> -->
-
+          
         </div>
       <ul class="cards shop_items_wrapper">
         <!-- Loader Wrapper Skeleton -->
@@ -100,8 +99,17 @@
         <span class="btn-next"><i class="fa fa-chevron-right"></i></span>
       </div>
     </main>
-    <?php require_once('./components/footer.php')?>
-    <?php require_once('./components/scripts.php');?>
+    <div id="footer-module"></div>
+
+    <script type="module">
+      import { attachFooter } from './components/footer.js';
+      const footerModule = document.querySelector('#footer-module');
+      attachFooter(footerModule);
+    </script>
+    <script type="module">
+      import { attachScripts } from './components/scripts.js';
+      attachScripts(document.body);
+    </script>
     <script src="./assets/js/shop.js"></script>
   </body>
 </html>

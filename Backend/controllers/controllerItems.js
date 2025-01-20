@@ -120,3 +120,13 @@ exports.getSpecificVariants = async (req, res) => {
     res.status(500).json({ error: err });
   }
 };
+
+exports.getOneVariant = async (req, res) => {
+  const idQuery = req.params.id;
+  try {
+    const variant = await Variants.findById(idQuery);
+    res.status(200).json(variant);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};

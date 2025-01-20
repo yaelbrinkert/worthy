@@ -66,5 +66,6 @@ router.get(
 );
 router.get('/getspecificitem/:id', itemController.getSpecificItem);
 router.get('/getspecificvariants/:id', itemController.getSpecificVariants);
+router.get('/getonevariant/:id', itemController.getOneVariant);
 
 module.exports = router;

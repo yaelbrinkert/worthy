@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mon Panier - Worthy</title>
     <link rel="stylesheet" href="./assets/css/basket.css">
-    <?php require_once('./components/metas.php');?>
+    <script type="module">
+      import { attachMetas } from './components/metas.js';
+      attachMetas(document.head);
+    </script>
   </head>
   <body class="body-index">
-  <?php require_once('./components/banner.php');?>
-  <?php require_once('./components/navbar.php');?>
+    <script type="module">
+      import { attachNavbar } from './components/navbar.js';
+      attachNavbar(document.body);
+    </script>
+    <script type="module">
+      import { attachBanner } from './components/banner.js';
+      attachBanner(document.body)
+    </script>
     <main class="wrapper__shop">
       <h1 class="title__shop">Votre panier <wty>Worthy</<wty></h1><br>
       <div class="wrapper__cart">
@@ -27,7 +36,17 @@
         </div>
       </div>
     </main>
-    <?php require_once('./components/scripts.php');?>
+    <div id="footer-module"></div>
+
+    <script type="module">
+      import { attachFooter } from './components/footer.js';
+      const footerModule = document.querySelector('#footer-module');
+      attachFooter(footerModule);
+    </script>
+    <script type="module">
+      import { attachScripts } from './components/scripts.js';
+      attachScripts(document.body);
+    </script>
     <script src="./assets/js/basket.js"></script>
   </body>
 </html>

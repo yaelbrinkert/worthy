@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page produit - Worthy</title>
+    <script type="module">
+      import { attachMetas } from './components/metas.js';
+      attachMetas(document.head);
+    </script>
+    <link rel="stylesheet" href="./assets/css/product.css" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="./assets/js/product.js" defer></script>
+  </head>
+  <body class="body-product">
+    <script type="module">
+      import { attachNavbar } from './components/navbar.js';
+      attachNavbar(document.body);
+    </script>
+    <script type="module">
+      import { attachBanner } from './components/banner.js';
+      attachBanner(document.body);
+    </script>
+
+    <div class="container__wrapper__order">
+      <aside class="wrapper__order">
+        <span class="close__order"><i class="fa fa-xmark"></i> Fermer</span>
+        <form id="payment-form" class="form-order">
+          <p id="title-element"></p>
+          <p id="price-element"></p>
+          <hr class="break-line-order" />
+          <p id="reduction-title-element">
+            Vous avez un code de réduction? Profitez-en
+          </p>
+          <input
+            type="text"
+            name="codereduction"
+            class="input__reduction__code"
+            value=""
+            placeholder="Exemple : REDUC15"
+            style="text-transform: uppercase"
+          />
+          <hr class="break-line-order" />
+          <div id="payment-element"></div>
+          <button id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Acheter</span>
+          </button>
+          <div id="payment-message" class="hidden"></div>
+        </form>
+      </aside>
+    </div>
+
+    <main class="wrapper__shop">
+      <!--  -->
+      <div class="skeleton__wrapper">
+        <div class="skeleton_1"></div>
+        <div class="skeleton_2">
+          <span></span>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <span></span>
+          <ww></ww>
+        </div>
+      </div>
+      <!--  -->
+      <div class="wrapper__single__product">
+        <!--  -->
+        <div class="wrapper__product__images">
+          <div class="single__product__image" id="productimage">
+            <!-- <img src="./assets/images/{%PRODUCTIMAGE%}" alt=""/> -->
+          </div>
+          <div class="multiple__product__images" id="multimages"></div>
+        </div>
+
+        <!--  -->
+        <div class="wrapper__product__infos">
+          <!-- <h1 class="title__shop">{%PRODUCTNAME%}</h1> -->
+          <h1 class="title__shop"></h1>
+          <div>
+            <span class="reducted__price"></span>
+            <span class="actual__price"></span>
+          </div>
+          <div id="filterItem"></div>
+          <hr />
+          <p class="description__product"></p>
+          <div class="wrapper__basket_and_buy__buttons"></div>
+        </div>
+      </div>
+    </main>
+    <div id="footer-module"></div>
+
+    <script type="module">
+      import { attachFooter } from './components/footer.js';
+      const footerModule = document.querySelector('#footer-module');
+      attachFooter(footerModule);
+    </script>
+    <script type="module">
+      import { attachScripts } from './components/scripts.js';
+      attachScripts(document.body);
+    </script>
+  </body>
+</html>

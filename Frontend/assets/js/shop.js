@@ -181,14 +181,14 @@ async function createCard(item) {
     <div class="card">
       <div class="card_image">
         <a href="#" onclick="addToCart('${item._id}', 1)" class="like_btn"><i class="fa fa-shopping-cart"></i></a>
-        <a href="./product.php?id=${item._id}" class="card_seem_more_button">Voir le produit</a>
+        <a href="./product.html?id=${item._id}" class="card_seem_more_button">Voir le produit</a>
         <img src="./assets/images/${imageOfTheProduct}" alt="${item.name}" />
       </div>
       <div class="card_content">
         <h2 class="card_title">${item.subcategory} <wty>"${item.name}"</wty></h2>
         <p class="card_text price_text">${priceToShow}</p>
         <div class="card_buttons">
-          <a href="./product.php?id=${item._id}" class="card_btn">Acheter</a>
+          <a href="./product.html?id=${item._id}" class="card_btn">Acheter</a>
         </div>
       </div>
     </div>

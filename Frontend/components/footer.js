@@ -1,4 +1,7 @@
-<footer class="wrapper__footer">
+export function createFooter() {
+  const footer = document.createElement('footer');
+  footer.className = 'wrapper__footer';
+  footer.innerHTML = `
     <img class="wrapper__footer__logo" src="./assets/images/logo_worthy_v1.png" alt="">
     <div class="wrapper__links__copyright">
         <div class="links__footer">
@@ -16,4 +19,11 @@
             <p>Copyright © 2025 Worthy Inc. All rights reserved.</p>
         </div>
     </div>
-</footer>
+`;
+  return footer;
+}
+
+export function attachFooter(target) {
+  const footer = createFooter();
+  target.prepend(footer);
+}

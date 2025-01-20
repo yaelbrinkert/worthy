@@ -260,11 +260,12 @@ const calculateOrderAmount = (items) => {
 
 exports.checkoutSingleProduct = async (req, res) => {
   try {
-    const { items } = req.body;
-
+    const { idOfProductVariant } = req.body;
+    const variant = await Variants.findById(idOfProductVariant);
+    const priceVariant = variant.price * 100;
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(items),
+      amount: priceVariant,
       currency: 'eur',
       // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
       automatic_payment_methods: {
