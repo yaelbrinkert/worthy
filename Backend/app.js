@@ -10,7 +10,10 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
 const corsOptions = {
-  origin: 'http://127.0.0.1:8080',
+  // origin: 'http://127.0.0.1:8080',
+  // origin: ['http://127.0.0.1:3000', 'http://localhost:3000'],
+  origin: '*',
+  // origin: 'http://127.0.0.1:3000',
   credentials: true, // Permet l'envoi des cookies JWT
 };
 const mongoUri = process.env.MONGODB_URI;
@@ -20,11 +23,12 @@ mongoose
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express();
+
+app.use(cors(corsOptions));
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors(corsOptions));
 app.use('/api/auth', routesAuth);
 app.use('/api/items', routesItems);
 app.use('/api/users', routesUsers);

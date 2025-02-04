@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 
 const itemController = require('../controllers/controllerItems.js');
 
@@ -55,10 +56,7 @@ async function createItem() {
 router.get('/getallitems', itemController.getAllItems);
 router.get('/getallitemspagination', itemController.getAllItemsPagination);
 router.get('/getcategories', itemController.getCategories);
-router.get(
-  '/getspecificcategories/:name',
-  itemController.getSpecificCategories
-);
+router.get('/getspecificcategories/:id', itemController.getSpecificCategories);
 router.get('/getsubcategories', itemController.getSubcategories);
 router.get(
   '/getspecificsubcategories/:id',

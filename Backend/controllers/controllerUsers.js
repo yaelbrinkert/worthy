@@ -156,24 +156,33 @@ exports.getCart = async (req, res) => {
 exports.addToCart = async (req, res) => {
   try {
     const id_user = req.userId;
-    const id_item = req.params.itemId;
+    const id_variant = req.params.variantId;
+
+    const getVariant = await Variants.findById(id_variant);
+    // const id_item = req.params.itemId;
     const quantity = req.params.quantity;
 
     const existingItem = await Cart.findOne({
       id_user: id_user,
-      id_item: id_item,
+      id_variant: id_variant,
+      id_item: getVariant.product_id,
     });
     if (existingItem) {
       const newQuantity = Number(existingItem.quantity) + Number(quantity);
       await Cart.updateOne(
-        { id_user: id_user, id_item: id_item },
+        {
+          id_user: id_user,
+          id_variant: id_variant,
+          id_item: getVariant.product_id,
+        },
         { quantity: newQuantity }
       );
       res.status(200).json(existingItem);
     } else {
       const obj = {
         id_user: id_user,
-        id_item: id_item,
+        id_variant: id_variant,
+        id_item: getVariant.product_id,
         quantity: quantity,
       };
       const cart = await Cart.create(obj);
@@ -188,10 +197,11 @@ exports.addToCart = async (req, res) => {
 exports.removeFromCart = async (req, res) => {
   try {
     const id_user = req.userId;
-    const id_item = req.params.itemId;
+    const id_variant = req.params.variantId;
+
     await Cart.deleteOne({
       id_user: id_user,
-      id_item: id_item,
+      id_variant: id_variant,
     });
     res.status(200).json({ message: "L'élément a été supprimé" });
   } catch (err) {
@@ -203,16 +213,18 @@ exports.removeFromCart = async (req, res) => {
 exports.addOneToCart = async (req, res) => {
   try {
     const id_user = req.userId;
-    const id_item = req.params.itemId;
+    const id_variant = req.params.variantId;
 
     const existingItem = await Cart.findOne({
       id_user: id_user,
-      id_item: id_item,
+      id_variant: id_variant,
     });
+
+    const id_item = existingItem.id_item;
 
     const newQuantity = Number(existingItem.quantity) + 1;
     await Cart.updateOne(
-      { id_user: id_user, id_item: id_item },
+      { id_user: id_user, id_item: id_item, id_variant: id_variant },
       { quantity: newQuantity }
     );
     res.status(200).json(existingItem);
@@ -225,22 +237,29 @@ exports.addOneToCart = async (req, res) => {
 exports.removeOneFromCart = async (req, res) => {
   try {
     const id_user = req.userId;
-    const id_item = req.params.itemId;
+    const id_variant = req.params.variantId;
 
     const existingItem = await Cart.findOne({
       id_user: id_user,
-      id_item: id_item,
+      id_variant: id_variant,
     });
+
+    const id_item = existingItem.id_item;
 
     const newQuantity = Number(existingItem.quantity) - 1;
     if (newQuantity > 0) {
       await Cart.updateOne(
-        { id_user: id_user, id_item: id_item },
+        { id_user: id_user, id_item: id_item, id_variant: id_variant },
         { quantity: newQuantity }
       );
       res.status(200).json(existingItem);
     } else if (newQuantity === 0 || newQuantity <= 0) {
-      await Cart.deleteOne({ id_user: id_user, id_item });
+      await Cart.deleteOne({
+        id_user: id_user,
+        id_variant: id_variant,
+        id_item: id_item,
+      });
+      res.status(200).json(existingItem);
     }
   } catch (err) {
     console.error("Erreur lors de l'ajout au panier:", err);
@@ -260,9 +279,9 @@ const calculateOrderAmount = (items) => {
 
 exports.checkoutSingleProduct = async (req, res) => {
   try {
-    const { idOfProductVariant } = req.body;
+    const idOfProductVariant = req.body.id;
     const variant = await Variants.findById(idOfProductVariant);
-    const priceVariant = variant.price * 100;
+    const priceVariant = variant.price;
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       amount: priceVariant,

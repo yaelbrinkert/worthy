@@ -55,7 +55,7 @@ exports.getAllItemsPagination = async (req, res) => {
       itemsPerPage: limit,
     };
 
-    res.status(200).json({ items, pagination });
+    res.status(200).json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -71,9 +71,9 @@ exports.getCategories = async (req, res) => {
 };
 
 exports.getSpecificCategories = async (req, res) => {
-  const nameQuery = req.params.name;
+  const idQuery = req.params.id;
   try {
-    const categories = await Categories.findOne({ name: nameQuery });
+    const categories = await Categories.findById(idQuery);
     res.status(200).json(categories);
   } catch (err) {
     res.status(500).json({ error: err });
