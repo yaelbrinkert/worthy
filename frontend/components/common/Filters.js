@@ -1,56 +1,36 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ProductContext } from '@/context/ProductContext';
+import { useDebounce } from '@/hooks/useDebounce';
+import Searchbar from './Searchbar';
 import '@/styles/filters.css';
 
 function Filters() {
-  const [minprice, setMinprice] = useState(0);
-  const [maxprice, setMaxprice] = useState(500);
-  const [search, setSearch] = useState('');
+  const { updateFilters } = useContext(ProductContext);
+  const [maxprice, setMaxprice] = useState(50000);
+  const debouncedPrice = useDebounce(maxprice, 300);
 
-  function handleMinPrice(val) {
-    setMinprice(val);
-  }
-  function handleMaxPrice(val) {
-    setMaxprice(val);
-  }
-  function handleSearch(val) {
-    setSearch(val);
-  }
+  useEffect(() => {
+    updateFilters({ maxPrice: debouncedPrice });
+  }, [debouncedPrice]);
 
   return (
     <div className="filters__wrapper">
       <div>
         <input
           className="filter-custom filter-price"
-          type="number"
-          name="min-price"
-          value={minprice}
-          step={5}
-          min={0}
-          onChange={(e) => handleMinPrice(e.target.value)}
-        />
-      </div>
-      <div>
-        <input
-          className="filter-custom filter-price"
-          type="number"
+          type="range"
           name="max-price"
           value={maxprice}
-          step={5}
-          min={1}
-          max={500}
-          onChange={(e) => handleMaxPrice(e.target.value)}
+          step={100}
+          min={0}
+          max={50000}
+          onChange={(e) => setMaxprice(e.target.value)}
         />
+        <span>{maxprice / 100}€</span>
       </div>
       <div>
-        <input
-          className="filter-custom"
-          type="text"
-          name="search-product"
-          placeholder="Rechercher..."
-          value={search}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
+        <Searchbar />
       </div>
     </div>
   );

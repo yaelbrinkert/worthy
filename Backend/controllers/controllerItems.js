@@ -14,11 +14,15 @@ exports.getAllItems = async (req, res) => {
 };
 
 exports.getAllItemsPagination = async (req, res) => {
-  const limit = parseInt(req.query.limit) || 10; // Taille par page (paramétrable)
   const page = parseInt(req.query.page) || 1; // Page demandée
-  const category = req.query.category;
+  const limit = parseInt(req.query.limit) || 10; // Taille par page (paramétrable)
   const promotion = req.query.promotion;
-  const subcategory = req.query.subcategory;
+  const name = req.query.name;
+  const maxPrice = req.query.maxPrice;
+  const size = req.query.size;
+  const category = req.query.category;
+
+  // const subcategory = req.query.subcategory;
 
   const filters = {};
 
@@ -33,10 +37,23 @@ exports.getAllItemsPagination = async (req, res) => {
   if (promotion) {
     filters.promotion = { $in: promotion };
   }
-  if (subcategory) {
-    const subcategoryFilter = subcategory.split(',');
-    filters.subcategory = { $in: subcategoryFilter };
+  if (name) {
+    filters.name = { $regex: name, $options: 'i' };
   }
+
+  if (maxPrice) {
+    filters.variants = {
+      $elemMatch: {
+        price: { $lte: maxPrice }, // Convertit en centimes
+        stocks: { $gt: 0 }, // Vérifie que le stock est > 0
+      },
+    };
+  }
+
+  // if (subcategory) {
+  //   const subcategoryFilter = subcategory.split(',');
+  //   filters.subcategory = { $in: subcategoryFilter };
+  // }
 
   try {
     // Nombre total d'éléments

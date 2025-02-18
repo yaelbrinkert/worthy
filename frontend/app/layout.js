@@ -3,6 +3,7 @@ import Banner from '@/components/layout/Banner';
 import Footer from '@/components/layout/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/globals.css';
+import { ProductProvider } from '@/context/ProductContext';
 
 export const metadata = {
   title: 'Worthy',
@@ -30,7 +31,7 @@ export default function RootLayout({ children }) {
       <body>
         <Banner />
         <Navbar />
-        {children}
+        <ProductProvider>{children}</ProductProvider>
         <Footer />
       </body>
     </html>
